@@ -53,17 +53,3 @@ python app/app.py
 ## ER diagram
 
 ![ER diagram](er_attrs.png)
-
-- **Rectangle:** entity. **Double rectangle:** weak entity (TABLES).
-- **Diamond:** relationship. **Double diamond:** identifying relationship (`has`).
-- **Underlined ellipse:** primary key. **Double ellipse:** multi-valued. **Dashed ellipse:** derived.
-- **Arrow:** points to the "one" side. **Double line:** total participation.
-
-## Design decisions
-
-- **TABLES is weak.** A label like "T1" only identifies a table within its restaurant.
-- **RESERVATIONS** links customers, tables, and staff.
-- **ORDERS** links reservations and menu items, so bills can be summed.
-- **Multi-valued attributes** (phones, dietary tags, allergens) are stored in their own tables.
-- **Derived attributes** (such as total bill) are computed in queries, not stored.
-- **Dates** are stored as text (`YYYY-MM-DD`), which SQLite compares correctly.
