@@ -52,4 +52,4 @@ python app/app.py
 
 ## ER diagram
 
-![ER diagram](er_attrs.png)
+![ER diagram](er_diagram.png)
