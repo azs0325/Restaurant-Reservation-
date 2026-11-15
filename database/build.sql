@@ -26,5 +26,4 @@ PRAGMA foreign_keys = ON;
 .print "Done: database/app.db was built from schema.sql and seed.sql."
 
 
--- fooooooooo
----- dude 
+
