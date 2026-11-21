@@ -13,7 +13,7 @@ Restaurant-Reservation-/
 ├── README.md
 ├── requirements.txt
 ├── banner.png
-├── er_attrs.png        # ER diagram
+├── er_diagram.png      # ER diagram
 ├── app/
 │   ├── app.py          # Flask routes
 │   └── queries.py      # one SQL query per feature
