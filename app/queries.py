@@ -66,7 +66,17 @@ MENU_ITEMS_WITHOUT_ALLERGEN = """
     ORDER BY m.price ASC, m.name ASC
 """
 
-
+# Zeta's Feature 3 (simple): Browse Restaurants in a City
+# A customer can see all restaurants in a chosen city (such 
+# as 'Hong Kong'), sorted alphabetically by name.
+BROWSE_RESTAURANTS_BY_CITY = """
+    SELECT restaurant_id,
+           name,
+           address
+    FROM restaurants
+    WHERE LOWER(city) = LOWER(:city)
+    ORDER BY name ASC
+"""
 
 
 
