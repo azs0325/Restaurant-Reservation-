@@ -78,6 +78,17 @@ BROWSE_RESTAURANTS_BY_CITY = """
     ORDER BY name ASC
 """
 
-
+# Zeta's Feature 4 (simple): Price Range Filter for Menu Items
+# Filters menu items within a price range at a specific restaurant 
+RESTAURANT_MENU_BY_PRICE_RANGE = """
+    SELECT menu_item_id,
+           name,
+           price
+    FROM menu_items
+    WHERE restaurant_id = :restaurant_id
+      AND price >= :min_price
+      AND price <= :max_price
+    ORDER BY price ASC, name ASC
+"""
 
 # TODO: add the remaining features (at least 8 in total, at least 4 advanced).
