@@ -33,4 +33,41 @@ CUSTOMER_BILLS = """
     ORDER BY r.start_time
 """
 
+# Zeta's Feature 1 (advanced: JOIN): Restaurants Offering a Specific Dietary Tag
+# A customer can find all restaurants that offer a chosen dietary tag (such
+# as 'vegan', 'vegetarian', or 'halal'), ordered alphabetically by restaurant name.
+
+RESTAURANTS_BY_DIETARY_TAG = """
+    SELECT r.restaurant_id,
+           r.name,
+           r.city
+    FROM restaurants r
+    JOIN restaurant_dietary_tags d
+      ON d.restaurant_id = r.restaurant_id
+    WHERE LOWER(d.tag) = LOWER(:tag)
+    ORDER BY r.name ASC
+"""
+# Zeta's Feature 2 (advanced: NOT EXISTS): Menu Items Free of a Specific Allergen
+# A customer can see menu items at a chosen restaurant that do not 
+# contain a specific allergen (such as 'peanut', 'dairy', or 'shellfish'),
+# including items that have no allergen entries recorded.
+MENU_ITEMS_WITHOUT_ALLERGEN = """
+    SELECT m.menu_item_id,
+           m.name,
+           m.price
+    FROM menu_items m
+    WHERE m.restaurant_id = :restaurant_id
+      AND NOT EXISTS (
+          SELECT 1
+          FROM menu_item_allergens a
+          WHERE a.menu_item_id = m.menu_item_id
+            AND LOWER(a.allergen) = LOWER(:allergen)
+      )
+    ORDER BY m.price ASC, m.name ASC
+"""
+
+
+
+
+
 # TODO: add the remaining features (at least 8 in total, at least 4 advanced).
