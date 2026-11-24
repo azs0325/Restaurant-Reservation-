@@ -92,3 +92,66 @@ RESTAURANT_MENU_BY_PRICE_RANGE = """
 """
 
 # TODO: add the remaining features (at least 8 in total, at least 4 advanced).
+
+# Unpopular menu items for a certain restaurant on completed reservations ADV
+UNSOLD_MENU_ITEMS_AT_RESTAURANT = """
+    SELECT m.menu_item_id,
+           m.name,
+           m.price
+    FROM menu_items m
+    WHERE m.restaurant_id = :restaurant_id
+      AND NOT EXISTS (
+          SELECT 1
+          FROM orders o
+          JOIN reservations r ON r.reservation_id = o.reservation_id
+          WHERE o.menu_item_id = m.menu_item_id
+            AND r.status = 'completed'
+      )
+    ORDER BY m.price ASC, m.name ASC
+"""
+
+# Untried dishes at a restaurant for a certain customer ADV
+UNTRIED_ITEMS_AT_RESTAURANT = """
+    SELECT m.menu_item_id,
+           m.name,
+           m.price
+    FROM menu_items m
+    WHERE m.restaurant_id = :restaurant_id
+      AND EXISTS (
+          SELECT 1
+          FROM customers c
+          WHERE LOWER(c.email) = LOWER(:email)
+      )
+      AND NOT EXISTS (
+          SELECT 1
+          FROM orders o
+          JOIN reservations r ON r.reservation_id = o.reservation_id
+          JOIN customers c    ON c.customer_id    = r.customer_id
+          WHERE o.menu_item_id = m.menu_item_id
+            AND r.status = 'completed'
+            AND LOWER(c.email) = LOWER(:email)
+      )
+    ORDER BY m.price ASC, m.name ASC
+"""
+
+# Tables for a certain restaurant with a certain party size SIMPLE
+SUITABLE_TABLES_FOR_PARTY = """
+    SELECT table_label,
+           seats,
+           zone
+    FROM tables
+    WHERE restaurant_id = :restaurant_id
+      AND seats >= :party_size
+    ORDER BY seats ASC, table_label ASC
+"""
+
+# Find a dish by a given keyword (ex. chicken, lasagna etc) SIMPLE
+SEARCH_DISHES_BY_KEYWORD = """
+    SELECT menu_item_id,
+           restaurant_id,
+           name,
+           price
+    FROM menu_items
+    WHERE LOWER(name) LIKE LOWER(:keyword_pattern)
+    ORDER BY price ASC, name ASC
+"""
