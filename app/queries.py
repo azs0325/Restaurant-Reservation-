@@ -16,18 +16,18 @@ RESTAURANT_MENU = """
     ORDER BY price
 """
 
-# Feature 2 (advanced: JOIN + GROUP BY with SUM):
-# A customer can see the total bill of each of their reservations.
+# Feature 2 (advanced: LEFT JOIN + GROUP BY with SUM):
+# A customer can see the total bill of each of their reservations (0 if nothing was ordered).
 CUSTOMER_BILLS = """
     SELECT r.reservation_id,
-           res.name                     AS restaurant,
+           res.name                              AS restaurant,
            r.start_time,
-           SUM(o.quantity * m.price)    AS total_price
+           COALESCE(SUM(o.quantity * m.price), 0) AS total_price
     FROM reservations r
     JOIN customers   c   ON c.customer_id     = r.customer_id
     JOIN restaurants res ON res.restaurant_id = r.restaurant_id
-    JOIN orders      o   ON o.reservation_id  = r.reservation_id
-    JOIN menu_items  m   ON m.menu_item_id    = o.menu_item_id
+    LEFT JOIN orders     o ON o.reservation_id = r.reservation_id
+    LEFT JOIN menu_items m ON m.menu_item_id   = o.menu_item_id
     WHERE c.email = :email
     GROUP BY r.reservation_id
     ORDER BY r.start_time
